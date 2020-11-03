@@ -1,0 +1,32 @@
+buildscript {
+    ext.scalaVersion = '2.13.3'
+    ext.kindProjectorVersion = '0.11.0'
+    ext.catsVersion = '2.2.0'
+    ext.catsEffectVersion = '2.2.0'
+    ext.catsMtlVersion = '1.0.0'
+    ext.catsTaglessVersion = '0.12'
+    ext.http4sVersion = '1.0.0-M5'
+    ext.munitVersion = '0.7.14'
+    ext.munitCatsEffectVersion = '0.7.0'
+
+    repositories {
+        google()
+        jcenter()
+//        maven { url "https://dl.bintray.com/dsvdsv/maven" }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.0.0"
+        classpath 'scala.android.plugin:scala-android-plugin:20201101.1908'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
