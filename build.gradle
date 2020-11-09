@@ -12,10 +12,9 @@ buildscript {
     repositories {
         google()
         jcenter()
-//        maven { url "https://dl.bintray.com/dsvdsv/maven" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.0"
+        classpath 'com.android.tools.build:gradle:4.0.2'
         classpath 'scala.android.plugin:scala-android-plugin:20201101.1908'
     }
 }

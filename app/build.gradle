@@ -12,6 +12,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        multiDexEnabled true
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -53,7 +55,7 @@ tasks.withType(ScalaCompile) {
                 "-Xlint:private-shadow", // A private field (or class parameter) shadows a superclass field.
                 "-Xlint:stars-align", // Pattern sequence wildcard must align with sequence component.
                 "-Xlint:type-parameter-shadow", // A local type parameter shadows a type already in scope.
-                "-Ywarn-dead-code", // Warn when dead code is identified.
+//                "-Ywarn-dead-code", // Warn when dead code is identified.
                 "-Ywarn-extra-implicit", // Warn when more than one implicit parameter section is defined.
                 "-Ywarn-numeric-widen", // Warn when numerics are widened.
                 "-Ywarn-unused:implicits", // Warn if an implicit parameter is unused.
@@ -87,8 +89,10 @@ dependencies {
 
     scalaCompilerPlugins "org.typelevel:kind-projector_2.13.3:$kindProjectorVersion"
 
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.material:material:1.2.1'
 
     testImplementation 'junit:junit:4.12'
     testImplementation "org.scalameta:munit_2.13:$munitVersion"

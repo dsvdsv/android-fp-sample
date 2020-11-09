@@ -34,9 +34,14 @@ object ExchangeLoader {
                 .use(
                   resp =>
                     resp.status match {
-                      case Status.Ok       => resp.as[RateList]
-                      case Status.NotFound => R.raise(NetworkError.NotFound)
-                      case _               => R.raise(NetworkError.ServerError)
+                      case Status.Ok =>
+                        resp
+                          .attemptAs[RateList]
+                          .foldF(e => R.raise(NetworkError.DecodeError(e.getMessage())), _.pure[F])
+                      case Status.NotFound =>
+                        R.raise(NetworkError.NotFound)
+                      case _ =>
+                        R.raise(NetworkError.ServerError)
                     }
                 )
             )
