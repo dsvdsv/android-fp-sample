@@ -17,7 +17,7 @@ class RateListRecyclerAdapter(var rateList: RateList) extends RecyclerView.Adapt
 
   override def onBindViewHolder(holder: RateListRecyclerAdapter.ViewHolder, position: Int): Unit = {
     val item = rateList.rates(position)
-    holder.currency.setText("EUR/" + item.currency)
+    holder.currency.setText(item.currency + "/EUR")
     holder.rate.setText(item.rate.toString())
   }
 

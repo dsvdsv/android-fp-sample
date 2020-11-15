@@ -1,5 +1,7 @@
 package com.github.dsvdsv.fp.sample.domain.net
 
+import java.io.IOException
+
 import cats.effect.Sync
 import cats.mtl.Raise
 import cats.syntax.all._
@@ -25,25 +27,28 @@ object ExchangeLoader {
 
     F.delay(
       new ExchangeLoader[F] {
-        override def fetchRates(uri: Uri): F[RateList] =
-          GET(uri)
+        override def fetchRates(uri: Uri): F[RateList] = {
+          val program = GET(uri)
             .flatMap(
-              client
-                .run(_)
-                .use(
-                  resp =>
-                    resp.status match {
-                      case Status.Ok =>
-                        resp
-                          .attemptAs[RateList]
-                          .foldF(e => R.raise(NetworkError.DecodeError(e.getMessage())), _.pure[F])
-                      case Status.NotFound =>
-                        R.raise(NetworkError.NotFound)
-                      case _ =>
-                        R.raise(NetworkError.ServerError)
-                    }
-                )
+              client.run(_)
+                .use { resp => resp.status match {
+                    case Status.Ok =>
+                      resp
+                        .attemptAs[RateList]
+                        .foldF(e => R.raise[NetworkError, RateList](NetworkError.DecodeError(e.getMessage())), _.pure[F])
+                    case Status.NotFound =>
+                      R.raise[NetworkError, RateList](NetworkError.NotFound(uri.toString() + " not found"))
+                    case s =>
+                      R.raise[NetworkError, RateList](NetworkError.ServerError("Unknown status " + s))
+                  }
+                }
             )
+
+          F.handleErrorWith(program) {
+            case ex: IOException => R.raise(NetworkError.CommunicationError(ex.getMessage))
+            case ex              => F.raiseError(ex)
+          }
+        }
       }
     )
   }

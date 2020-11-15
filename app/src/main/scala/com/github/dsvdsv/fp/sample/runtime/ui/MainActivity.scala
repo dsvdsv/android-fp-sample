@@ -5,6 +5,7 @@ package ui
 import java.time.LocalDate
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.{LinearLayoutManager, RecyclerView}
 import cats.effect.{IO, Resource}
 import com.github.dsvdsv.fp.sample.domain.net.{NetworkError, RateList}
 import com.google.android.material.snackbar.{BaseTransientBottomBar, Snackbar}
-
 
 class MainActivity extends AppCompatActivity with ApplicationLookup {
   private var loader: ProgressBar              = _
@@ -44,7 +44,14 @@ class MainActivity extends AppCompatActivity with ApplicationLookup {
           runtime.fetchRates().foldF[Unit](showError, showRateList)
         }
       }
-      .unsafeRunAsyncAndForget()
+      .unsafeRunAsync({
+        case Left(er) =>
+          Log.e("MainActivity", "Error " + Thread.currentThread().getName(), er)
+          ()
+        case Right(_) =>
+          Log.d("MainActivity", "Success " + Thread.currentThread().getName())
+          ()
+      })
   }
 
   private def showLoading(): IO[Unit] =
@@ -65,7 +72,7 @@ class MainActivity extends AppCompatActivity with ApplicationLookup {
 
   private def showError(error: NetworkError): IO[Unit] =
     uiThread {
-      Snackbar.make(list, error.getMessage, BaseTransientBottomBar.LENGTH_SHORT).show()
+      Snackbar.make(list, error.getMessage, BaseTransientBottomBar.LENGTH_LONG).show()
     }
 
   private def uiThread(body: => Unit): IO[Unit] =
