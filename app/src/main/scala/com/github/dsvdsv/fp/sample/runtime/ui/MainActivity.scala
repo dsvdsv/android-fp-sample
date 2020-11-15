@@ -13,6 +13,7 @@ import cats.effect.{IO, Resource}
 import com.github.dsvdsv.fp.sample.domain.net.{NetworkError, RateList}
 import com.google.android.material.snackbar.{BaseTransientBottomBar, Snackbar}
 
+
 class MainActivity extends AppCompatActivity with ApplicationLookup {
   private var loader: ProgressBar              = _
   private var list: RecyclerView               = _
@@ -25,7 +26,7 @@ class MainActivity extends AppCompatActivity with ApplicationLookup {
     loader = findViewById(R.id.loader)
     list = findViewById(R.id.list)
 
-    list.setHasFixedSize(true);
+    list.setHasFixedSize(true)
     list.setLayoutManager(new LinearLayoutManager(this))
 
     adapter = new RateListRecyclerAdapter(RateList(LocalDate.now(), List.empty))
@@ -35,22 +36,26 @@ class MainActivity extends AppCompatActivity with ApplicationLookup {
   override def onResume(): Unit = {
     super.onResume()
 
-    val loadind = Resource.make(showLoading())(_ => hideLoading())
+    val loading = Resource.make(showLoading())(_ => hideLoading())
 
-    loadind
+    loading
       .use { _ =>
         sampleApplication().applicationRuntime.flatMap { runtime =>
           runtime.fetchRates().foldF[Unit](showError, showRateList)
         }
       }
-      .unsafeRunSync()
+      .unsafeRunAsyncAndForget()
   }
 
   private def showLoading(): IO[Unit] =
-    uiThread { loader.setVisibility(View.VISIBLE) }
+    uiThread {
+      loader.setVisibility(View.VISIBLE)
+    }
 
   private def hideLoading(): IO[Unit] =
-    uiThread { loader.setVisibility(View.GONE) }
+    uiThread {
+      loader.setVisibility(View.GONE)
+    }
 
   private def showRateList(rateList: RateList): IO[Unit] =
     uiThread {
@@ -65,9 +70,6 @@ class MainActivity extends AppCompatActivity with ApplicationLookup {
 
   private def uiThread(body: => Unit): IO[Unit] =
     IO {
-      runOnUiThread(new Runnable {
-        def run(): Unit =
-          body
-      })
+      runOnUiThread(() => body)
     }
 }

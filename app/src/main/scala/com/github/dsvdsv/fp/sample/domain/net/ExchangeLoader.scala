@@ -22,7 +22,6 @@ object ExchangeLoader {
     val dsl = new Http4sClientDsl[F] {}
 
     import dsl._
-    import org.http4s.scalaxml._
 
     F.delay(
       new ExchangeLoader[F] {

@@ -8,26 +8,28 @@
         tools:context=".runtime.ui.MainActivity" android:id="@+id/activity_main">
 
     <ProgressBar
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/loader"
             android:visibility="gone"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:progressTint="#FFFFFF"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/list"/>
+            android:id="@+id/list"
+           />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
