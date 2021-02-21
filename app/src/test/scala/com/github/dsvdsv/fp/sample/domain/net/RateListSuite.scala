@@ -4,11 +4,9 @@ import java.time.LocalDate
 
 import cats.effect.IO
 import cats.implicits._
-import com.github.dsvdsv.fp.sample.domain.net.RateList.Rate
 import munit.CatsEffectSuite
 import org.http4s.{InvalidMessageBodyFailure, Response}
 import org.http4s.Status.Ok
-import org.http4s.scalaxml._
 
 class RateListSuite extends CatsEffectSuite {
   test("success parse xml") {
@@ -26,8 +24,8 @@ class RateListSuite extends CatsEffectSuite {
       RateList(
         LocalDate.of(2020, 11, 3),
         List(
-          Rate("USD", BigDecimal("1.1702")),
-          Rate("JPY", BigDecimal("122.56"))
+          RateList.Rate("USD", BigDecimal("1.1702")),
+          RateList.Rate("JPY", BigDecimal("122.56"))
         )
       )
 

@@ -6,7 +6,7 @@ import android.content.Context
 trait ApplicationLookup {
   self: Context =>
 
-  def sampleApplication(): SampleApplication = {
-    getApplicationContext().asInstanceOf[SampleApplication]
+  def rateApplication(): RateApplication = {
+    getApplicationContext().asInstanceOf[RateApplication]
   }
 }

@@ -2,14 +2,14 @@ package com.github.dsvdsv.fp.sample.runtime
 
 import android.app.Application
 import cats.effect.{ExitCode, IO, IOApp}
-import com.github.dsvdsv.fp.sample.runtime.context.ApplicationRuntime
+import com.github.dsvdsv.fp.sample.domain.UIApi
 
-class SampleApplication extends Application with IOApp {
-  var runtime: IO[(ApplicationRuntime[IO], IO[Unit])] = _
+class RateApplication extends Application with IOApp {
+  var runtime: IO[(UIApi[IO], IO[Unit])] = _
 
   override def onCreate(): Unit = {
     super.onCreate()
-    runtime = ApplicationRuntime.launch[IO].allocated
+    runtime = Runtime.uiApi[IO].allocated
   }
 
   override def onTerminate(): Unit = {
@@ -20,9 +20,10 @@ class SampleApplication extends Application with IOApp {
     }
   }
 
-  def applicationRuntime: IO[ApplicationRuntime[IO]] =
+  def applicationRuntime: IO[UIApi[IO]] =
     runtime.map(_._1)
 
   override def run(args: List[String]): IO[ExitCode] =
     IO.pure(ExitCode.Success)
 }
+

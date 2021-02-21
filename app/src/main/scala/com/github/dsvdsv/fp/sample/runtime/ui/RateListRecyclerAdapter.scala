@@ -6,7 +6,8 @@ import android.view.{LayoutInflater, View, ViewGroup}
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.github.dsvdsv.fp.sample.domain.net.RateList
+
+import domain.net.RateList
 
 class RateListRecyclerAdapter(var rateList: RateList) extends RecyclerView.Adapter[RateListRecyclerAdapter.ViewHolder] {
   override def onCreateViewHolder(parent: ViewGroup, viewType: Int): RateListRecyclerAdapter.ViewHolder = {

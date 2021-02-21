@@ -3,7 +3,6 @@ package runtime
 package ui
 
 import java.time.LocalDate
-
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,8 +10,9 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.{LinearLayoutManager, RecyclerView}
 import cats.effect.{IO, Resource}
-import com.github.dsvdsv.fp.sample.domain.net.{NetworkError, RateList}
 import com.google.android.material.snackbar.{BaseTransientBottomBar, Snackbar}
+
+import domain.net.{ExchangeError, RateList}
 
 class MainActivity extends AppCompatActivity with ApplicationLookup {
   private var loader: ProgressBar              = _
@@ -40,7 +40,7 @@ class MainActivity extends AppCompatActivity with ApplicationLookup {
 
     loading
       .use { _ =>
-        sampleApplication().applicationRuntime.flatMap { runtime =>
+        rateApplication().applicationRuntime.flatMap { runtime =>
           runtime.fetchRates().foldF[Unit](showError, showRateList)
         }
       }
@@ -54,23 +54,23 @@ class MainActivity extends AppCompatActivity with ApplicationLookup {
       })
   }
 
-  private def showLoading(): IO[Unit] =
+  def showLoading(): IO[Unit] =
     uiThread {
       loader.setVisibility(View.VISIBLE)
     }
 
-  private def hideLoading(): IO[Unit] =
+  def hideLoading(): IO[Unit] =
     uiThread {
       loader.setVisibility(View.GONE)
     }
 
-  private def showRateList(rateList: RateList): IO[Unit] =
+  def showRateList(rateList: RateList): IO[Unit] =
     uiThread {
       adapter.rateList = rateList
       adapter.notifyDataSetChanged()
     }
 
-  private def showError(error: NetworkError): IO[Unit] =
+  def showError(error: ExchangeError): IO[Unit] =
     uiThread {
       Snackbar.make(list, error.getMessage, BaseTransientBottomBar.LENGTH_LONG).show()
     }

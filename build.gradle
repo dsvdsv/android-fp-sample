@@ -1,13 +1,13 @@
 buildscript {
-    ext.scalaVersion = '2.13.3'
-    ext.kindProjectorVersion = '0.11.0'
-    ext.catsVersion = '2.2.0'
-    ext.catsEffectVersion = '2.2.0'
-    ext.catsMtlVersion = '1.0.0'
+    ext.scalaVersion = '2.13.4'
+    ext.kindProjectorVersion = '0.11.2'
+    ext.catsVersion = '2.4.2'
+    ext.catsEffectVersion = '2.3.3'
+    ext.catsMtlVersion = '1.1.2'
     ext.catsTaglessVersion = '0.12'
-    ext.http4sVersion = '1.0.0-M5'
-    ext.munitVersion = '0.7.14'
-    ext.munitCatsEffectVersion = '0.7.0'
+    ext.http4sVersion = '0.21.19'
+    ext.munitVersion = '0.7.20'
+    ext.munitCatsEffectVersion = '0.12.0'
 
     repositories {
         google()
