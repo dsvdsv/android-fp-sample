@@ -15,7 +15,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
-        classpath 'scala.android.plugin:scala-android-plugin:20201101.1908'
+        classpath 'scala.android.plugin:scala-android-plugin:20210222.1057'
     }
 }
 
